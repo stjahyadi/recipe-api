@@ -1,0 +1,13 @@
+openapi: 3.0.3
+
+info:
+
+components:
+  parameters:
+    recipe-id:
+      name: id
+      in: path
+      description: "Id of recipe to search"
+      required: true
+      schema:
+        type: string

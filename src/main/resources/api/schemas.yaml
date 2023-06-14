@@ -1,0 +1,55 @@
+openapi: 3.0.3
+
+info:
+  version: 1.0
+  title: Schema
+paths:
+
+components:
+  schemas:
+    RecipeRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        dishType:
+          $ref: "#/components/schemas/DishType"
+        servings:
+          type: number
+        ingredients:
+          type: array
+          items:
+            type: string
+          example: ["spaghetti", "garlic", "olive oil"]
+        instructions:
+          type: string
+          example: "1. Cook spaghetti\n2. Heat olive oil and garlic in a pan\n3. Add red pepper flakes\n4. Toss cooked spaghetti in the pan\n5. Serve hot"
+    RecipeResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        dishType:
+          $ref: "#/components/schemas/DishType"
+        servings:
+          type: number
+        ingredients:
+          type: array
+          items:
+            type: string
+          example: [ "spaghetti", "garlic", "olive oil" ]
+        instructions:
+          type: string
+          example: "1. Cook spaghetti\n2. Heat olive oil and garlic in a pan\n3. Add red pepper flakes\n4. Toss cooked spaghetti in the pan\n5. Serve hot"
+    DishType:
+      type: string
+      description: "Type of dish"
+      example: "VEGAN"
+      enum:
+        - VEGAN
+        - VEGETARIAN
+        - NON-VEGETARIAN

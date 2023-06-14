@@ -1,0 +1,96 @@
+openapi: 3.0.3
+info:
+  title: Recipe API
+  description: Recipe API to manage favourite recipe
+  version: 1.0
+tags:
+  - name: Recipe
+    description: Manage recipe
+
+paths:
+  /v1/recipe/{id}:
+    get:
+      tags:
+        - Recipe
+      summary: Get recipe
+      description: Get recipe information using id
+      operationId: getRecipe
+      parameters:
+        - $ref: './parameters.yaml#/components/parameters/recipe-id'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: './schemas.yaml#/components/schemas/RecipeResponse'
+        404:
+          description: Recipe not found
+    put:
+      tags:
+        - Recipe
+      summary: Update existing recipe
+      description: Update existing recipe to the collection
+      operationId: updateRecipe
+      requestBody:
+        description: Account number and desired amount to deposit
+        content:
+          application/json:
+            schema:
+              $ref: './schemas.yaml#/components/schemas/RecipeRequest'
+        required: true
+      responses:
+        202:
+          description: Recipe is updated successfully
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+    delete:
+      tags:
+        - Recipe
+      summary: Delete recipe
+      description: Delete recipe by using id
+      operationId: deleteRecipe
+      parameters:
+        - $ref: './parameters.yml#/components/parameters/id'
+      responses:
+        204:
+          description: Recipe is deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        404:
+          description: Recipe not found
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeNotFoundError'
+  /v1/recipe:
+    post:
+      tags:
+        - Recipe
+      summary: Add new recipe
+      description: Add new recipe to the collection
+      operationId: addRecipe
+      requestBody:
+        description: Account number and desired amount to deposit
+        content:
+          application/json:
+            schema:
+              $ref: './schemas.yaml#/components/schemas/RecipeRequest'
+        required: true
+      responses:
+        201:
+          description: Recipe is added successfully
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
