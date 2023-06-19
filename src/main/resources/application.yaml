@@ -22,14 +22,7 @@ server:
       enabled: true
       force: true
 
-logging:
-  level:
-    root: INFO
+#logging:
+#  level:
+#    springfox: INFO
 
-#springdoc:
-#  api-docs:
-#    path: /internal/api-spec/openapi/v3
-#    groups:
-#      enabled: true
-#  swagger-ui:
-#    url: /api/openapi.yml
