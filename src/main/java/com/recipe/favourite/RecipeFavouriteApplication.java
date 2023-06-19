@@ -1,4 +1,4 @@
-package com.recipe.recipefavourite;
+package com.recipe.favourite;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

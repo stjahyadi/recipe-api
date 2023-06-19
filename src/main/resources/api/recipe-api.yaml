@@ -2,13 +2,13 @@ openapi: 3.0.3
 info:
   title: Recipe API
   description: Recipe API to manage favourite recipe
-  version: 1.0
+  version: '1.0'
 tags:
   - name: Recipe
     description: Manage recipe
 
 paths:
-  /v1/recipe/{id}:
+  /v1/recipes/{id}:
     get:
       tags:
         - Recipe
@@ -16,7 +16,7 @@ paths:
       description: Get recipe information using id
       operationId: getRecipe
       parameters:
-        - $ref: './parameters.yaml#/components/parameters/recipe-id'
+        - $ref: './parameters.yaml#/components/parameters/id'
       responses:
         200:
           description: Successful operation
@@ -24,14 +24,20 @@ paths:
             application/json:
               schema:
                 $ref: './schemas.yaml#/components/schemas/RecipeResponse'
+        400:
+          $ref: './responses.yaml#/components/responses/BadRequest'
         404:
-          description: Recipe not found
+          $ref: './responses.yaml#/components/responses/NotFound'
+        500:
+          $ref: './responses.yaml#/components/responses/ServerError'
     put:
       tags:
         - Recipe
       summary: Update existing recipe
-      description: Update existing recipe to the collection
+      description: Update existing recipe by id
       operationId: updateRecipe
+      parameters:
+        - $ref: './parameters.yaml#/components/parameters/id'
       requestBody:
         description: Account number and desired amount to deposit
         content:
@@ -40,46 +46,39 @@ paths:
               $ref: './schemas.yaml#/components/schemas/RecipeRequest'
         required: true
       responses:
-        202:
-          description: Recipe is updated successfully
+        204:
+          $ref: './responses.yaml#/components/responses/NoContent'
         400:
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequest'
+          $ref: './responses.yaml#/components/responses/BadRequest'
+        404:
+          $ref: './responses.yaml#/components/responses/NotFound'
+        500:
+          $ref: './responses.yaml#/components/responses/ServerError'
     delete:
       tags:
         - Recipe
       summary: Delete recipe
-      description: Delete recipe by using id
+      description: Delete recipe by id
       operationId: deleteRecipe
       parameters:
-        - $ref: './parameters.yml#/components/parameters/id'
+        - $ref: './parameters.yaml#/components/parameters/id'
       responses:
         204:
-          description: Recipe is deleted successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Recipe'
+          $ref: './responses.yaml#/components/responses/NoContent'
+        400:
+          $ref: './responses.yaml#/components/responses/BadRequest'
         404:
-          description: Recipe not found
+          $ref: './responses.yaml#/components/responses/NotFound'
         500:
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RecipeNotFoundError'
-  /v1/recipe:
+          $ref: './responses.yaml#/components/responses/ServerError'
+  /v1/recipes:
     post:
       tags:
         - Recipe
       summary: Add new recipe
-      description: Add new recipe to the collection
+      description: Add new recipe
       operationId: addRecipe
       requestBody:
-        description: Account number and desired amount to deposit
         content:
           application/json:
             schema:
@@ -87,10 +86,27 @@ paths:
         required: true
       responses:
         201:
-          description: Recipe is added successfully
+          $ref: './responses.yaml#/components/responses/Created'
         400:
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequest'
+          $ref: './responses.yaml#/components/responses/BadRequest'
+        500:
+          $ref: './responses.yaml#/components/responses/ServerError'
+    get:
+      tags:
+        - Recipe
+      summary: Fetch Recipes
+      description: Fetch recipe with Filters
+      operationId: fetchRecipes
+      parameters:
+        - $ref: './parameters.yaml#/components/parameters/dish-type'
+        - $ref: './parameters.yaml#/components/parameters/servings'
+        - $ref: './parameters.yaml#/components/parameters/ingredients'
+        - $ref: './parameters.yaml#/components/parameters/exclude-ingredients'
+        - $ref: './parameters.yaml#/components/parameters/search'
+      responses:
+        200:
+          $ref: './responses.yaml#/components/responses/OK'
+        400:
+          $ref: './responses.yaml#/components/responses/BadRequest'
+        500:
+          $ref: './responses.yaml#/components/responses/ServerError'

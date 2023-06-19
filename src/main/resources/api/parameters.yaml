@@ -4,10 +4,56 @@ info:
 
 components:
   parameters:
-    recipe-id:
+    id:
       name: id
       in: path
-      description: "Id of recipe to search"
+      description: "Id of recipe"
       required: true
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+    dish-type:
+      name: dish-type
+      in: query
+      description: Filter recipes by dish type
+      required: false
+      schema:
+        $ref: './schemas.yaml#/components/schemas/DishType'
+    servings:
+      name: servings
+      in: query
+      description: Filter recipes by number of servings
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+    ingredients:
+      name: ingredients
+      in: query
+      description: Filter recipes by specific ingredients (include)
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+    exclude-ingredients:
+      name: exclude-ingredients
+      in: query
+      description: Filter recipes by specific ingredients (exclude)
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+    search:
+      name: search
+      in: query
+      description: Filter recipes by text search within instructions
+      required: false
       schema:
         type: string

@@ -1,0 +1,35 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    username: demo
+    password: demo
+    url: jdbc:postgresql://localhost:5432/demo
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    schemas: public
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+logging:
+  level:
+    root: INFO
+
+#springdoc:
+#  api-docs:
+#    path: /internal/api-spec/openapi/v3
+#    groups:
+#      enabled: true
+#  swagger-ui:
+#    url: /api/openapi.yml
