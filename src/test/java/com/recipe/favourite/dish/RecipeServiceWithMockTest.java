@@ -187,7 +187,7 @@ public class RecipeServiceWithMockTest {
 
         when(recipeRepository.findAll()).thenReturn(recipes);
 
-        List<String> includeIngredients = List.of("Tomatoes");
+        List<String> includeIngredients = List.of("tomatoes");
         List<String> excludeIngredients = List.of("Salmon");
         String instruction = "oven";
 

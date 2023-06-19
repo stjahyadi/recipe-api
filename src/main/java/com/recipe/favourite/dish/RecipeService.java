@@ -7,8 +7,8 @@ import com.recipe.favourite.common.model.RecipeMapperFactory;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -56,22 +56,29 @@ public class RecipeService {
 
     public List<RecipeEntity> fetchRecipesByFilter(
             DishType dishType,
-            Integer servings, List<String> ingredients, List<String> excludeIngredients, String search){
+            Integer servings, List<String> ingredients, List<String> excludeIngredients, String search) {
         return recipeRepository.findAll().stream()
                 .filter(recipe -> (dishType == null || recipe.getDishType() == dishType)
                         && (servings == null || recipe.getServings() == servings)
                         && (ingredients == null || ingredients.isEmpty() || recipeContainsIngredients(recipe, ingredients))
                         && (excludeIngredients == null || excludeIngredients.isEmpty() || !recipeContainsIngredients(recipe, excludeIngredients))
-                        && (search == null || search.isEmpty() || recipe.getInstructions().contains(search))
+                        && isContainInstruction(search, recipe)
                 )
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    private static boolean isContainInstruction(String search, RecipeEntity recipe) {
+        return search == null || search.isEmpty() || recipe.getInstructions().toLowerCase().contains(search.toLowerCase());
     }
 
     private boolean recipeContainsIngredients(RecipeEntity recipe, List<String> ingredients) {
         List<String> recipeIngredients = recipe.getIngredients().stream()
                 .map(IngredientEntity::getName)
-                .collect(Collectors.toList());
-        return recipeIngredients.containsAll(ingredients);
+                .map(String::toLowerCase)
+                .toList();
+        return new HashSet<>(recipeIngredients).containsAll(ingredients.stream()
+                .map(String::toLowerCase)
+                .toList());
     }
 
 }

@@ -31,7 +31,7 @@ This endpoint allows users to filter recipes based on various criteria. Users ca
 - dish-type: Filter recipes based on whether they are vegetarian or not.
 - serving: Filter recipes based on the number of servings.
 - ingredients: Filter recipes that include specific ingredients.
-- excluded-ingredients: Filter recipes that exclude specific ingredients.
+- exclude-ingredients: Filter recipes that exclude specific ingredients.
 - search: Filter recipes based on a text search within the recipe instructions.
 
 ## Table Design
@@ -75,6 +75,7 @@ And stop the application with
 http://localhost:8080/swagger-ui/index.html
 
 ## Improvement
-* Filter the recipe by criteria with query to increase the performance
-* Use testcontainer to do integration testing
-* Dockerize the application and use docker compose to run the application as container
+- More test cases to cover all possible cases
+- Filter the recipe by criteria with query to increase the performance
+- Use testcontainer to do integration testing
+- Dockerize the application and use docker compose to run the application as container
