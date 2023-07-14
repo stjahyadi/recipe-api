@@ -23,8 +23,8 @@ public class RecipeService {
 
     public RecipeEntity addRecipe(RecipeRequest recipeRequest) {
         RecipeEntity recipe = RecipeMapperFactory.fromRequest(recipeRequest);
-        recipeRepository.save(recipe);
-        return recipe;
+        RecipeEntity savedRecipe = recipeRepository.save(recipe);
+        return savedRecipe;
     }
 
     public RecipeEntity getRecipeById(Long id) {

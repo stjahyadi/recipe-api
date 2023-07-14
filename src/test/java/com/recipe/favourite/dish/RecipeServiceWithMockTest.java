@@ -40,20 +40,16 @@ public class RecipeServiceWithMockTest {
         DishType dishType = DishType.NON_VEGETARIAN;
         String instructions = "Boil water and cook spaghetti. In a separate pan, heat olive oil and sauté garlic. Add tomatoes and simmer for 10 mins";
         List<String> ingredients = List.of("Spaghetti", "Olive Oil", "Garlic");
-        RecipeRequest request = recipeRequest(recipeId, title, servings, dishType, instructions, ingredients);
+        RecipeRequest request = recipeRequest(null, title, servings, dishType, instructions, ingredients);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(
-                Optional.of(recipeEntity(recipeId, title, servings, dishType, instructions, ingredients)));
+        when(recipeRepository.save(any())).thenReturn(recipeEntity(recipeId, title, servings, dishType, instructions, ingredients));
 
         RecipeEntity createdRecipe = recipeService.addRecipe(request);
 
-        RecipeEntity savedRecipe = recipeRepository.findById(createdRecipe.getId()).orElse(null);
-
-        assertNotNull(savedRecipe);
-        assertEquals(createdRecipe.getId(), savedRecipe.getId());
-        assertEquals(createdRecipe.getTitle(), savedRecipe.getTitle());
-        assertEquals(createdRecipe.getServings(), savedRecipe.getServings());
-        assertEquals(createdRecipe.getInstructions(), savedRecipe.getInstructions());
+        assertNotNull(createdRecipe.getId());
+        assertEquals(createdRecipe.getTitle(), request.getTitle());
+        assertEquals(createdRecipe.getServings(), request.getServings());
+        assertEquals(createdRecipe.getInstructions(), request.getInstructions());
     }
 
     @Test
@@ -64,8 +60,9 @@ public class RecipeServiceWithMockTest {
         DishType dishType = DishType.NON_VEGETARIAN;
         String instructions = "Boil water and cook spaghetti. In a separate pan, heat olive oil and sauté garlic. Add tomatoes and simmer for 10 mins";
         List<String> ingredients = List.of("Spaghetti", "Olive Oil", "Garlic");
-        RecipeRequest request = recipeRequest(recipeId, title, servings, dishType, instructions, ingredients);
+        RecipeRequest request = recipeRequest(null, title, servings, dishType, instructions, ingredients);
 
+        when(recipeRepository.save(any())).thenReturn(recipeEntity(recipeId, title, servings, dishType, instructions, ingredients));
         recipeService.addRecipe(request);
 
         String newTitle = "Spaghetti Tomato";
@@ -97,20 +94,12 @@ public class RecipeServiceWithMockTest {
     @Test
     void testDeleteRecipeById() {
         Long recipeId = 1L;
-        String title = "Spaghetti";
-        Integer servings = 2;
-        DishType dishType = DishType.NON_VEGETARIAN;
-        String instructions = "Boil water and cook spaghetti. In a separate pan, heat olive oil and sauté garlic. Add tomatoes and simmer for 10 mins";
-        List<String> ingredients = List.of("Spaghetti", "Olive Oil", "Garlic");
-        RecipeRequest request = recipeRequest(recipeId, title, servings, dishType, instructions, ingredients);
-
-        RecipeEntity createdRecipe = recipeService.addRecipe(request);
-        Long id = createdRecipe.getId();
-
         when(recipeRepository.existsById(anyLong())).thenReturn(true);
 
-        recipeService.deleteRecipeById(id);
-        assertTrue(recipeRepository.existsById(recipeId));
+        recipeService.deleteRecipeById(recipeId);
+        assertThrows(RecipeNotFoundException.class, () -> {
+            recipeService.getRecipeById(recipeId);
+        });
     }
 
     @Test
